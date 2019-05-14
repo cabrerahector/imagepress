@@ -37,6 +37,7 @@ $optionArray = [
     'ip_registration' => 1,
     'ip_click_behaviour' => 'media',
     'ip_cat_moderation_include' => '',
+    'ip_mod_collections' => 0,
     'ip_upload_redirection' => '',
     'ip_notification_email' => '',
 

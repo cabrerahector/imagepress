@@ -378,9 +378,11 @@ function ip_main($imageId) {
             <i class="far fa-eye"></i> <?php echo ip_getPostViews($imageId); ?>
         <?php } ?>
         <?php echo $ip_comments; ?>
-        <em> | </em>
-        <?php if (function_exists('ip_frontend_add_collection')) {
-            echo ip_frontend_add_collection(get_the_ID());
+        <?php if ((int) get_imagepress_option('ip_mod_collections') === 1) { ?>
+            <em> | </em>
+            <?php if (function_exists('ip_frontend_add_collection')) {
+                echo ip_frontend_add_collection(get_the_ID());
+            }
         }
 
         /*
@@ -496,9 +498,11 @@ function ip_main_return($imageId) {
         }
         $out .= $ip_comments;
 
-        $out .= '<em> | </em>';
-        if (function_exists('ip_frontend_add_collection')) {
-            $out .= ip_frontend_add_collection(get_the_ID());
+        if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+            $out .= '<em> | </em>';
+            if (function_exists('ip_frontend_add_collection')) {
+                $out .= ip_frontend_add_collection(get_the_ID());
+            }
         }
 
         $out .= ip_editor();

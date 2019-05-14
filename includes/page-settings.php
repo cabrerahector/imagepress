@@ -480,6 +480,7 @@ function imagepress_admin_page() {
                     'ip_registration' => $_POST['ip_registration'],
                     'ip_click_behaviour' => $_POST['ip_click_behaviour'],
                     'ip_cat_moderation_include' => $_POST['ip_cat_moderation_include'],
+                    'ip_mod_collections' => 0,
                     'ip_upload_redirection' => $_POST['ip_upload_redirection'],
                     'ip_notification_email' => $_POST['ip_notification_email'],
                     'ip_enable_views' => $_POST['ip_enable_views']

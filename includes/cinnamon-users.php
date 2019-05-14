@@ -391,9 +391,13 @@ function cinnamon_profile_edit($atts) {
             $out .= '<form method="post" id="adduser" action="" enctype="multipart/form-data" class="thin-ui-form">
                 <ul class="tabs">
                     <li><a href="#summary" class="is-active">' . __('Summary', 'imagepress') . '</a></li>
-                    <li><a href="#account">' . __('Account Details', 'imagepress') . '</a></li>
-                    <li><a href="#collections" class="imagepress-collections">' . __('Collections', 'imagepress') . '</a></li>
-                    <li><a href="#editor">' . __('Image Editor', 'imagepress') . '</a></li>
+                    <li><a href="#account">' . __('Account Details', 'imagepress') . '</a></li>';
+
+            if (get_imagepress_option('ip_mod_collections') == 1) {
+                $out .= '<li><a href="#collections" class="imagepress-collections">' . __('Collections', 'imagepress') . '</a></li>';
+            }
+
+            $out .= '<li><a href="#editor">' . __('Image Editor', 'imagepress') . '</a></li>
                 </ul>
                 <div class="tab-content" id="summary">
                     <h3>' . __('Statistics', 'imagepress') . '</h3>';
@@ -439,10 +443,12 @@ function cinnamon_profile_edit($atts) {
                             __('uploads', 'imagepress') . '
                         </div>';
 
-                        $out .= '<div class="ip-user-dashboard-stat">
-                            <span>' . kformat(ip_collection_count($userid)) . '</span>' .
-                            __('collections', 'imagepress') . '
-                        </div>';
+                        if(get_imagepress_option('ip_mod_collections') == 1) {
+                            $out .= '<div class="ip-user-dashboard-stat">
+                                <span>' . kformat(ip_collection_count($userid)) . '</span>' .
+                                __('collections', 'imagepress') . '
+                            </div>';
+                        }
 
                     $out .= '</div>';
                     $out .= '<div class="ip_clear"></div>';
@@ -548,29 +554,31 @@ function cinnamon_profile_edit($atts) {
                     </table>
                 </div>';
 
-                $out .= '<div class="tab-content" id="collections">
-                    <p>
-                        <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
-                        <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
-                        <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
-                        <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-cog fa-spin"></i></a>
-                    </p>
-                    <div class="ip-modal">
-                        <h2>' . __('Create new collection', 'imagepress') . '</h2>
-                        <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
-
-                        <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
-                        <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
-                        <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
+                if(get_imagepress_option('ip_mod_collections') == 1) {
+                    $out .= '<div class="tab-content" id="collections">
                         <p>
-                            <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
-                            <label class="collection-progress">' . __('Creating collection...', 'imagepress') . '</label>
-                            <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
+                            <a href="#" class="toggleModal button noir-secondary">' . __('Create new collection', 'imagepress') . '</a>
+                            <span class="ip-loadingCollections">' . __('Loading collections...', 'imagepress') . '</span>
+                            <span class="ip-loadingCollectionImages">' . __('Loading collection images...', 'imagepress') . '</span>
+                            <a href="#" class="imagepress-collections imagepress-float-right button"><i class="fas fa-cog fa-spin"></i></a>
                         </p>
-                    </div>
+                        <div class="ip-modal">
+                            <h2>' . __('Create new collection', 'imagepress') . '</h2>
+                            <a href="#" class="close toggleModal">' . __('Close', 'imagepress') . '</a>
 
-                    <div class="collections-display"></div>
-                </div>';
+                            <input type="hidden" id="collection_author_id" name="collection_author_id" value="' . $userid . '">
+                            <p><input type="text" id="collection_title" name="collection_title" placeholder="' . __('Collection title', 'imagepress') . '"></p>
+                            <p><label>Make this collection</label> <select id="collection_status"><option value="1">' . __('Public', 'imagepress') . '</option><option value="0">' . __('Private', 'imagepress') . '</option></select></p>
+                            <p>
+                                <input type="submit" value="' . __('Create', 'imagepress') . '" class="addCollection">
+                                <label class="collection-progress">' . __('Creating collection...', 'imagepress') . '</label>
+                                <label class="showme">' . __('Collection created!', 'imagepress') . '</label>
+                            </p>
+                        </div>
+
+                        <div class="collections-display"></div>
+                    </div>';
+                }
 
                 // Image Editor
                 // View, delete, reorder

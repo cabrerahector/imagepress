@@ -307,16 +307,18 @@ function imagepress_add($atts) {
             //
 
             // collections
-            $ip_collections = (int) ($_POST['ip_collections']);
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $ip_collections = (int) ($_POST['ip_collections']);
 
-            if (!empty($_POST['ip_collections_new'])) {
-                $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                $ip_collection_status = (int) ($_POST['collection_status']);
+                if (!empty($_POST['ip_collections_new'])) {
+                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                    $ip_collection_status = (int) ($_POST['collection_status']);
 
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-            } else {
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+                } else {
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
+                }
             }
             //
 
@@ -407,16 +409,18 @@ function imagepress_add_bulk($atts) {
             }
 
             // collections
-            $ip_collections = (int) ($_POST['ip_collections']);
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $ip_collections = (int) ($_POST['ip_collections']);
 
-            if (!empty($_POST['ip_collections_new'])) {
-                $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
-                $ip_collection_status = (int) ($_POST['collection_status']);
+                if (!empty($_POST['ip_collections_new'])) {
+                    $ip_collections_new = sanitize_text_field($_POST['ip_collections_new']);
+                    $ip_collection_status = (int) ($_POST['collection_status']);
 
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
-            } else {
-                $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collections (collection_title, collection_status, collection_author_ID) VALUES (%s, %d, %d)", $ip_collections_new, $ip_collection_status, $ip_image_author));
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $wpdb->insert_id, $ip_image_author));
+                } else {
+                    $wpdb->query($wpdb->prepare("INSERT INTO " . $wpdb->prefix . "ip_collectionmeta (image_ID, image_collection_ID, image_collection_author_ID) VALUES (%d,  %d,  %d)", $post_id, $ip_collections, $ip_image_author));
+                }
             }
             //
         }
@@ -560,7 +564,9 @@ function imagepress_get_upload_image_form($ipImageCaption = '', $ipImageCategory
             $out .= '</p>';
 
             // Add to collection on upload
-            $out .= ip_collection_dropdown();
+            if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                $out .= ip_collection_dropdown();
+            }
 
             // Custom fields
             $result = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "ip_fields ORDER BY field_order ASC", ARRAY_A);
@@ -678,7 +684,9 @@ function imagepress_get_upload_image_form_bulk($ipImageCategory = 0, $imagepress
                 $out .= '</p>';
 
                 // Add to collection on upload
-                $out .= ip_collection_dropdown();
+                if ((int) get_imagepress_option('ip_mod_collections') === 1) {
+                    $out .= ip_collection_dropdown();
+                }
 
                 $uploadsize = number_format((($ip_upload_size * 1024)/1024000), 0, '.', '');
                 $datauploadsize = $uploadsize * 1024000;
