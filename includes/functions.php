@@ -716,7 +716,7 @@ add_action('wp_ajax_nopriv_imagepress_list_update_order','imagepress_order_list'
 function get_imagepress_option($option) {
     $ipOptions = get_option('imagepress');
 
-    return isset($ipOptions[$option]) ? $ipOptions[$option] : false;
+    return isset($ipOptions[$option]) && $option != 'ip_mod_collections' ? $ipOptions[$option] : false;
 }
 
 function updateImagePressOption($optionArray) {
